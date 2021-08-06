@@ -1,7 +1,8 @@
-import discord
+import discord, os, sys
 from dotenv import load_dotenv
-import os
 
+sys.path.append('{}/commands'.format(os.getcwd()))
+from roll import roll_cmd
 
 client = discord.Client()
 
@@ -11,16 +12,17 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    print(message.author, client.user)
     async def sendMsg(txt):
         await message.channel.send("```{}```".format(txt))
 
     # Don't register if the message is from the bot
     if message.author == client.user:
+        print('Bot message!')
         return
 
     # Someone uses the '/' to input a commands
-    elif message.content.startswith('/'):
-        
+    if message.content.startswith('/'):
         if message.content == '/help':
             await sendMsg('you need help')
             return
