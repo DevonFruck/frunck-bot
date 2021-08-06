@@ -13,11 +13,11 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-        if (message.content.startswith('!')):
-            if (message.content.contains('hi')):
-                await message.channel.send("Don't say hi to me!")
-            else:
-                await message.channel.send('Hello!')
+    if (message.content.startswith('!')):
+        if (message.content.contains('hi')):
+            await message.channel.send("Don't say hi to me!")
+        else:
+            await message.channel.send('Hello!')
 
 load_dotenv()
 client.run(os.getenv('TOKEN'))
