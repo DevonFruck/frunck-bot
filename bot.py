@@ -14,10 +14,7 @@ async def on_message(message):
         return
 
     if (message.content.startswith('!')):
-        if (message.content.contains('hi')):
-            await message.channel.send("Don't say hi to me!")
-        else:
-            await message.channel.send('Hello!')
+        await message.channel.send("Don't say hi to me!")
 
 load_dotenv()
 client.run(os.getenv('TOKEN'))
