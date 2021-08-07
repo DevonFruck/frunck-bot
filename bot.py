@@ -8,12 +8,12 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
-  print('Logged in as ' + str(client.user))
+  print('Logged in as {}'.format(client.user))
 
 @client.event
 async def on_message(message):
   async def sendMsg(txt):
-    await message.channel.send("```{}```".format(txt))
+    await message.channel.send(txt)
 
   # Don't register if the message is from the bot
   if message.author == client.user:
@@ -28,7 +28,7 @@ async def on_message(message):
       return
 
     elif input.startswith('/roll'):
-      await roll_cmd(message.content, sendMsg)
+      await roll_cmd(message.content, message.author, sendMsg)
       return
 
     else:
