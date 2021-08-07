@@ -1,5 +1,5 @@
-import re
 from random import randint
+import re
 
 cmd_pattern = '/roll+\s+[\d]+d[\d]'
 
