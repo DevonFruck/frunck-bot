@@ -1,11 +1,10 @@
 from random import randint
 import re
 
-cmd_pattern = '^/roll\s\d+[d]\d+(\s[d]\d+)?$'
+cmd_pattern = '\d+[d]\d+(\s[d]\d+)?$'
 
-async def displayRolls(sendMsg, author, rolls, total):
-  #await sendMsg("@{}".format(author) + str(rolls).replace("'", "") + " = " + "**{}**".format(str(total)))
-  await sendMsg("`@%s` %s = **%s**" % (author, str(rolls).replace("'", ""), str(total)))
+async def displayRolls(ctx, author, rolls, total):
+  await ctx.send("`@%s` %s = **%s**" % (author, str(rolls).replace("'", ""), str(total)))
 
 async def findLowestInt(list, numOfDrops):
   for x in range(0, numOfDrops):
@@ -31,23 +30,26 @@ async def findLowestInt(list, numOfDrops):
 
   return list, total
 
-async def roll_cmd(input, author, sendMsg):
+async def roll_cmd(input, author, ctx):
+  print(input)
   if not re.search(cmd_pattern, input):
-    await sendMsg('Improper use of command. /roll [# of die]d[# of faces]')
+    await ctx.send('Improper use of command. /roll [# of die]d[# of faces]')
     return
   
   # Getting data from command arguments
   parsedText = input.split()
-  rollParse = parsedText[1].split('d')
+  rollParse = parsedText[0].split('d')
   numOfDropRolls = 0
-  if len(parsedText) >= 3:
-    numOfDropRolls = int(parsedText[2].replace('d', ''))
+
+  # Checking if there is an aditional argument
+  if len(parsedText) >= 2:
+    numOfDropRolls = int(parsedText[1].replace('d', ''))
   
   rolls = []
   for num in range(0, int(rollParse[0])):
     rolls.append(randint(1, int(rollParse[1])))
   
-  #Determine lowest dice to drop (if applicable)
+  # Determine lowest dice to drop (if applicable)
   rolls, total = await findLowestInt(rolls, numOfDropRolls)
 
-  await displayRolls(sendMsg, author, rolls, total)
+  await displayRolls(ctx, author, rolls, total)

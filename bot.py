@@ -1,42 +1,27 @@
-import discord, os, sys
+import os, sys
+from discord.ext import commands
 from dotenv import load_dotenv
 
 sys.path.append('{}/commands'.format(os.getcwd()))
 from roll import roll_cmd
 
-client = discord.Client()
+bot = commands.Bot(command_prefix='/')
 
 
-@client.event
+@bot.event
 async def on_ready():
-  print('Logged in as {}'.format(client.user))
+  print('Logged in as {}'.format(bot.user))
 
 
-@client.event
-async def on_message(message):
+@bot.event
+async def on_command_error(ctx, error):
+  await ctx.send(("```%s```" % error))
 
-  # Don't register if the message is from the client
-  if message.author == client.user:
-    return
-  
-  async def sendMsg(txt):
-    await message.channel.send(txt)
 
-  # Someone uses the '/' to input a commands
-  if message.content.startswith('/'):
-    input = message.content.lower()
+@bot.command(name='roll', help="roll baby")
+async def roll(ctx, arg):
+  await roll_cmd(arg, ctx.author, ctx)
 
-    if input == '/help':
-      await sendMsg("I can't help you until my developer implements me!")
-      return
-
-    elif input.startswith('/roll'):
-      await roll_cmd(message.content, message.author, sendMsg)
-      return
-
-    else:
-      await sendMsg('Unrecognized command. type /help for commands')
-      return
 
 load_dotenv()
-client.run(os.getenv('TOKEN'))
+bot.run(os.getenv('TOKEN'))
