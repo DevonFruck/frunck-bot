@@ -4,8 +4,14 @@ from dotenv import load_dotenv
 
 sys.path.append('{}/commands'.format(os.getcwd()))
 from roll import roll_cmd
+import music
 
+COGS = [music]
 bot = commands.Bot(command_prefix='/')
+
+for i in range(len(COGS)):
+  COGS[i].setup(bot)
+
 
 
 @bot.event
