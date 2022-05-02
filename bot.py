@@ -7,10 +7,15 @@ from roll import roll_cmd
 import music
 
 COGS = [music]
-bot = commands.Bot(command_prefix='/')
+bot = commands.Bot(command_prefix='!')
 
 for i in range(len(COGS)):
   COGS[i].setup(bot)
+
+  cog = bot.get_cog('music')
+  c_list = cog.get_commands()
+
+  print([c.name for c in c_list])
 
 
 
